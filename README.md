@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Drone Imaging and Disaster Management Drone
 
 A **camera-integrated Arduino-based autonomous drone system** combining **computer vision**, **embedded motor control**, and **geospatial data processing** for **real-time disaster monitoring and damage assessment**.  
@@ -57,6 +58,8 @@ Ensure all motor connections and ESC calibrations are properly configured.
 
 ### 2. Python Vision Module Setup
 **Recommended Python Version:** `3.11`  
+=======
+>>>>>>> 00a04439bc28c7acffd395989091fd31dac0cff7
 
 Install required dependencies:
 ```bash
