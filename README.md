@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Drone Imaging and Disaster Management Drone
 
 A **camera-integrated Arduino-based autonomous drone system** combining **computer vision**, **embedded motor control**, and **geospatial data processing** for **real-time disaster monitoring and damage assessment**.  
