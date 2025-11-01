@@ -1,121 +1,144 @@
-# Vision-Guided GazeBot
+Drone Imaging and Disaster Management Drone
 
-A camera-driven robotic system integrating computer vision with embedded control to translate human head gestures into directional motion. The project demonstrates **real-time gaze-based robotic pointing**, combining **MediaPipe**, **OpenCV**, and **ESP32** microcontroller-based servo actuation.
+A camera-integrated autonomous drone system leveraging computer vision, geospatial analytics, and embedded control for real-time disaster monitoring and assessment.
+This project combines OpenCV-based object detection, image mapping, and autonomous flight control via ESP32/Arduino flight controllers, aiming to assist in search-and-rescue, damage estimation, and terrain mapping during disaster scenarios.
 
----
+System Overview
 
-## System Overview
+The Drone Imaging and Disaster Management System fuses real-time visual analytics with embedded flight control for intelligent aerial operations.
 
-The **Vision-Guided GazeBot** establishes a seamless interface between a **Python-based vision module** and an **ESP32-driven robotic vehicle**.
-- The **PC module** captures head movements through a webcam, using **MediaPipe Face Detection** to compute head displacement from the screen center.
-- The **ESP32 module**, connected via **Bluetooth**, interprets these positional deltas to control **servo motors**, resulting in synchronized physical pointing of the robotic vehicle.
-- Manual control remains available through the **Dabble ESP32 app (Play Store)** for direct motor operation, enabling hybrid manual–AI control.
+The onboard camera module captures and streams live imagery for object recognition, fire/smoke detection, or flood boundary identification.
 
----
+The ground control module (Python + OpenCV) processes image data, detects key regions, and transmits control signals to the ESP32/Flight Controller.
 
-## Hardware and Software Components
+Integrated GPS and IMU sensors provide spatial awareness, enabling geo-tagged mapping and autonomous path planning.
 
-| Component | Description |
-|------------|-------------|
-| **ESP32** | Wi-Fi & Bluetooth-enabled microcontroller handling servo and motor control. |
-| **Servo Motors** | Perform head-aligned directional pointing. |
-| **Motor Driver + Vehicle Base** | Drives physical movement of the robot. |
-| **Webcam (Laptop/PC)** | Captures live head movement. |
-| **Python (MediaPipe + OpenCV)** | Processes camera frames to compute head position offsets. |
-| **Bluetooth Communication** | Connects PC vision module and ESP32 for real-time control. |
-| **Dabble ESP32 App** | Optional manual control interface for vehicle and servos. |
+Manual override via the Dabble app or RC controller ensures safety and hybrid operation.
 
----
+Hardware and Software Components
+Component	Description
+ESP32 / Arduino Flight Controller	Handles PWM motor control, telemetry, and sensor integration.
+Brushless Motors + ESCs	Core propulsion units for lift and maneuvering.
+Drone Frame + Propellers	Lightweight carbon-fiber or nylon structure for flight stability.
+GPS Module (NEO-6M)	Enables geolocation tracking and waypoint navigation.
+IMU (MPU6050)	Provides orientation and motion sensing.
+Camera Module (ESP32-CAM / Pi Camera)	Captures aerial imagery for visual analytics.
+Python (OpenCV + TensorFlow Lite / YOLO)	Performs object detection, fire/flood segmentation, and scene understanding.
+Bluetooth / Wi-Fi Communication	Enables data streaming between drone and ground station.
+Dabble App / RC Controller	Provides manual override and control interface.
+Setup and Installation
+1. Flight Controller Setup
 
-## Setup and Installation
+Board Manager Version: ESP32 by Espressif Systems v2.0.17 (recommended for stability)
 
-### 1. ESP32 Environment
-- **Board Manager Version:** `ESP32 by Espressif Systems v2.0.17`  
-  ⚠️ Dabble does **not** function correctly on later board versions.
-- **Libraries Used (Arduino IDE):**
-  - `ESP32Servo` v3.0.7
-  - `DabbleESP32` v1.5.1
+Arduino Libraries Used:
 
-Upload the `ESP32_Bluetooth_Car_Servo.ino` sketch to your ESP32 board.  
-Once uploaded, the board automatically creates a Bluetooth interface accessible from the **Dabble app**.
+ESP32Servo v3.0.7
 
-### 2. Python Environment
-Install dependencies:
-**Recommended Python Version:** `Python 3.11`  
-Using higher versions (e.g., 3.12+) may cause compatibility issues with **cvzone** or **mediapipe** dependencies.
+DabbleESP32 v1.5.1
 
-```bash
+TinyGPS++ v1.0.3
+
+MPU6050 v0.6
+
+Upload the firmware (Drone_Imaging_Controller.ino) to your ESP32/Arduino.
+Ensure the motors are calibrated before the first flight.
+
+2. Vision Module Setup (Python)
+
+Recommended Python Version: 3.11
+Install the following dependencies:
+
 pip install -r requirements.txt
-```
 
-**requirements.txt**
-```
-cvzone==1.6.1
+
+requirements.txt
+
 opencv-python==4.11.0.86
+cvzone==1.6.1
 pyserial==3.5
-
-```
-> **Note:**  
-> - `cvzone` internally depends on **MediaPipe**, which is automatically installed when installing `cvzone`.  
-> - No explicit `mediapipe` import is required in the source code.
+tensorflow-lite==2.11.0
+geopy==2.3.0
 
 
+Note:
 
-### 3. Bluetooth Connection
-1. Pair ESP32 with your PC via Bluetooth.  
-2. Note the COM port (Windows) or device path (Linux/macOS).  
-3. Run the Python vision script (`facedetection.py` or `facdet.py`), ensuring it connects to the correct serial port.  
-4. The script continuously detects head displacement and sends servo control signals accordingly.
+cvzone automatically installs MediaPipe dependencies.
 
----
+TensorFlow Lite is used for lightweight edge inference.
 
-## System Workflow
+Use a compatible USB or Bluetooth COM port for ESP32 connection.
 
-1. The webcam tracks the user's **face position** using **MediaPipe**.  
-2. Displacement from the frame’s center determines the **servo motor’s angle**.  
-3. ESP32 receives these position values via **Bluetooth Serial**.  
-4. The robotic platform adjusts its servo-mounted pointer to **align with the user’s gaze direction**.  
-5. Optional manual override: Dabble app can control the vehicle’s **movement and servo angles**.
+3. Communication Setup
 
----
+Pair your ESP32/Drone module with the ground PC over Bluetooth or Wi-Fi serial.
 
-## Demonstration
+Verify the connection port (Windows: COMx / Linux: /dev/ttyUSB0).
 
-Below are real-world images from the project demo.
+Launch the Python imaging script (drone_imaging.py) to start camera feed and control linkage.
 
-| | | |
-|-|-|-|
-| ![Demo 1](images/Demo_up.png) | ![Demo 2](images/Demo_down.png) |
-| *Person looks up — bot points upward* | *Person looks down — bot points downward* |
-| ![Demo 3](images/demo_left.png) | ![Demo 4](images/demo_right.png) |
-| *Left head turn — bot points left* | *Right head turn — bot points right* |
+The drone responds to detection-based triggers — e.g., hover over region of interest, capture image, or mark coordinates.
 
----
+System Workflow
 
-## Directory Structure
+The onboard camera streams live video frames to the Python ground module.
 
-```
-ML-Vision-Guided-GazeBot/
+Computer vision algorithms (OpenCV/TensorFlow Lite) detect critical features — e.g., fire, debris, humans, or flood zones.
+
+Detected regions are geo-tagged using GPS coordinates.
+
+The ESP32 controller adjusts flight behavior (hover, move, capture) accordingly.
+
+The ground dashboard visualizes detections, logs data, and allows manual intervention.
+
+Demonstration
+
+Below are sample operational visuals from the drone module.
+
+		
+
+	
+	
+Autonomous hover with real-time feed	Fire zone detection and coordinate tagging	
+
+	
+	
+Flood-affected area segmentation	Victim detection and position lock-on	
+Directory Structure
+Drone-Imaging-Disaster-Management/
 │
-├── facedetection.py              # MediaPipe + OpenCV-based head detection
-├── facdet.py                     # Alternate/experimental detection module
-├── ESP32_Bluetooth_Car_Servo/
-│   └── ESP32_Bluetooth_Car_Servo.ino   # Main control firmware
+├── drone_imaging.py                 # Vision + AI-based detection module
+├── gps_mapping.py                   # Geo-tagging and mapping utility
+├── Drone_Imaging_Controller/
+│   └── Drone_Imaging_Controller.ino # Main flight control firmware
+├── models/
+│   ├── fire_detection.tflite        # TensorFlow Lite model for fire/smoke detection
+│   ├── human_detection.tflite       # Human/object detection model
+├── images/                          # Demo output images
 └── README.md
-```
 
----
+Known Version Issues
 
-## Known Version Issues
-- **Dabble ESP32** fails to compile on board versions > **2.0.17**.  
-- Ensure the **ESP32Servo** library remains at **v3.0.7** for consistent PWM output.  
-- Bluetooth Serial sometimes disconnects after sleep mode; reconnect manually if needed.
-- **Python 3.11** is recommended — later versions can lead to OpenCV–cvzone runtime errors.
+ESP32 board version > 2.0.17 may break Dabble compatibility.
 
+Python ≥ 3.12 can cause dependency errors with cvzone and mediapipe.
 
----
+GPS serial conflicts may occur when using Bluetooth simultaneously — reassign serial ports manually.
 
-## Future Enhancements
-- Integrate **gesture smoothing** using Kalman filters for stability.  
-- Add **yaw-pitch-roll based mapping** for finer head motion interpretation.  
-- Extend to **wireless camera input** or **edge-processed vision** (ESP32-CAM or Jetson Nano).
+Ensure motor ESC calibration before first power-on to avoid startup surges.
+
+Future Enhancements
+
+🧠 AI-based Disaster Classification: Integrate CNNs for fire, flood, and debris-type classification.
+
+🌍 Real-time Mapping Dashboard: Develop a web dashboard (Flask + LeafletJS) for live GPS plotting.
+
+📡 Edge AI Deployment: Shift detection to onboard processing (ESP32-CAM / Jetson Nano).
+
+🛰️ Drone Swarm Coordination: Multi-drone cooperation for large-scale disaster mapping.
+
+⚙️ Autonomous Path Planning: Implement obstacle avoidance using LIDAR or depth sensors.
+
+🧾 Data Archiving: Automatic upload of geotagged images to a cloud database (Firebase/AWS S3).
+
+🔋 Battery and Telemetry Monitoring: Real-time drone health diagnostics with alerts.
