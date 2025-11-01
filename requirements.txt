@@ -1,0 +1,5 @@
+opencv-python==4.11.0.86
+cvzone==1.6.1
+pyserial==3.5
+tensorflow-lite==2.11.0
+geopy==2.3.0

@@ -1,415 +1,63 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hardware Projects — Quadcopter</title>
-  <style>
-    /* Simple, readable styling suitable for GitHub Pages */
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --muted:#9aa4b2;
-      --accent:#7dd3fc;
-      --white:#f8fafc;
-      --glass: rgba(255,255,255,0.03);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    html,body{height:100%;}
-    body{
-      margin:0;
-      padding:32px;
-      background: linear-gradient(180deg,var(--bg), #071024);
-      color:var(--white);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
+# Drone Imaging and Disaster Management Drone
 
-    .container{
-      max-width:900px;
-      margin:0 auto;
-    }
+A **camera-integrated Arduino-based autonomous drone system** combining **computer vision**, **embedded motor control**, and **geospatial data processing** for **real-time disaster monitoring and damage assessment**.  
+The project integrates **OpenCV-based image analytics** with **Arduino Uno flight control**, enabling low-cost aerial imaging and semi-autonomous navigation for emergency response and terrain analysis.
 
-    header{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      margin-bottom:20px;
-    }
-    h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:0.6px;
-    }
-    .meta{
-      color:var(--muted);
-      font-size:13px;
-    }
+---
 
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;
-      padding:18px;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
-      border:1px solid rgba(255,255,255,0.03);
-      margin-bottom:18px;
-    }
+## 🧭 Abstract and Project Aim
 
-    .section-title{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .section-title h2{
-      margin:0;
-      font-size:14px;
-    }
-    .tag{
-      font-size:12px;
-      color:var(--muted);
-      background:var(--glass);
-      padding:6px 8px;
-      border-radius:8px;
-    }
+In disaster-affected zones, rapid assessment is essential for effective relief operations.  
+This project aims to develop a **vision-assisted drone system** that can detect, analyze, and map disaster-prone regions such as **fires**, **floods**, or **collapsed structures**.  
+Using a **Python-based computer vision module** for real-time object detection and an **Arduino Uno–controlled quadcopter** for flight operations, the system offers **aerial imaging, data visualization**, and **autonomous control support** for rescue missions.
 
-    pre.ascii{
-      background:transparent;
-      color:var(--muted);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
-      font-size:12px;
-      overflow:auto;
-      margin:0 0 12px 0;
-    }
+---
 
-    ul.parts{
-      margin:0;
-      padding-left:18px;
-      line-height:1.6;
-      color:var(--white);
-    }
+## ⚙️ System Overview
 
-    .controls{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    button.copy{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--accent);
-      padding:6px 10px;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:13px;
-      backdrop-filter: blur(4px);
-    }
-    button.copy:active{transform:translateY(1px)}
-    footer{
-      color:var(--muted);
-      font-size:13px;
-      margin-top:18px;
-      text-align:center;
-    }
+The **Drone Imaging and Disaster Management Drone** integrates a **ground-based image processing unit** with an **Arduino Uno–driven aerial platform**.
+- The **onboard camera** captures live video streams that are analyzed using **OpenCV** and **TensorFlow Lite** for hazard detection (e.g., fire, smoke, human figures).
+- The **Arduino Uno**, interfaced through **serial communication**, controls the drone’s motors via a **motor driver or ESCs**.
+- **GPS** and **IMU (MPU6050)** sensors provide location, orientation, and stability feedback.
+- The system allows both **autonomous and manual override** via a **remote controller or serial commands**.
 
-    @media (min-width:720px){
-      .two-col{
-        display:grid;
-        grid-template-columns: 1fr 1fr;
-        gap:14px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>HARDWARE PROJECTS</h1>
-      <div class="meta">Initialized on <strong>17/08/2025</strong></div>
-    </header>
+---
 
-    <div class="card">
-      <div class="section-title">
-        <h2>QUADROCOPTER (HARDWARE REQUIRED)</h2>
-        <div class="controls">
-          <div class="tag">Status: Planned</div>
-          <button class="copy" id="copyHardware">Copy hardware list</button>
-        </div>
-      </div>
+## 🧩 Hardware and Software Components
 
-      <pre class="ascii">=========================================================================================
-</pre>
+| Component | Description |
+|------------|-------------|
+| **Arduino Uno** | Core flight controller managing motor control and sensor interfacing. |
+| **Brushless Motors + ESCs / Motor Driver** | Provides propulsion and directional thrust. |
+| **Drone Frame + Propellers** | Aerodynamic frame supporting motors and sensors. |
+| **GPS Module (NEO-6M)** | Enables location tracking and coordinate mapping. |
+| **IMU (MPU6050)** | Provides accelerometer and gyroscope readings for stabilization. |
+| **Camera (USB / Pi Camera)** | Captures live video feed for vision-based detection. |
+| **Python (OpenCV + TensorFlow Lite)** | Handles object detection, mapping, and serial communication. |
+| **Serial USB Connection** | Data link between PC (vision module) and Arduino Uno. |
+| **RC Transmitter / Joystick** | Optional manual override for pilot control. |
 
-      <ul class="parts" id="hardwareList">
-        <li>4 × BLDC MOTOR — 1000KV A2212/13Y</li>
-        <li>4 × ESC — 30 AMP</li>
-        <li>1 × 2200mAh Lithium battery</li>
-        <li>1 × XT60/XT6050 connector (M/F)</li>
-        <li>4 × 10-inch propellers</li>
-        <li>1 × Arduino UNO</li>
-        <li>Jumper wires (MtM, MtF, FtF)</li>
-        <li>FlySky FS-i6 (6-channel transmitter and receiver / flight controller)</li>
-      </ul>
+---
 
-      <pre class="ascii">=========================================================================================
-</pre>
-      <div style="color:var(--muted); font-size:13px; margin-top:8px;">
-        Notes: adjust motor/ESC specs to match frame weight and battery C-rating. Confirm connector type (XT60 vs XT6050) before ordering.
-      </div>
-    </div>
+## 🧰 Setup and Installation
 
-    <div class="two-col">
-      <div class="card">
-        <div class="section-title">
-          <h2>QUADROCOPTER (SOFTWARE)</h2>
-          <div class="tag">TODO</div>
-        </div>
-        <p style="color:var(--muted); margin:0;">
-          Add software stack details here (flight controller firmware, autopilot, companion computer, ground control station, PID tuning steps, etc.).
-        </p>
-      </div>
+### 1. Arduino Environment Setup
+- **Board:** Arduino Uno  
+- **Port:** Select your Arduino COM port in the IDE.  
+- **Required Libraries:**
+  - `Servo.h`
+  - `TinyGPS++`
+  - `MPU6050`
+  - `SoftwareSerial`
 
-      <div class="card">
-        <div class="section-title">
-          <h2>PROJECT METADATA</h2>
-          <div class="tag">Project</div>
-        </div>
+Upload the firmware `Drone_Uno_Controller.ino` to your Arduino Uno.  
+Ensure all motor connections and ESC calibrations are properly configured.
 
-        <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.6;">
-          <li><strong>Initialized:</strong> 17/08/2025</li>
-          <li><strong>Category:</strong> Hardware / Embedded</li>
-          <li><strong>Next steps:</strong> Frame selection → ESC calibration → Motor test → Software integration</li>
-        </ul>
-      </div>
-    </div>
+---
 
-    <footer>
-      Tip: to publish this page via GitHub Pages, put this file in the repository root (or `docs/`) and enable Pages in repository settings.
-    </footer>
-  </div>
+### 2. Python Vision Module Setup
+**Recommended Python Version:** `3.11`  
 
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hardware Projects — Quadcopter</title>
-  <style>
-    /* Simple, readable styling suitable for GitHub Pages */
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --muted:#9aa4b2;
-      --accent:#7dd3fc;
-      --white:#f8fafc;
-      --glass: rgba(255,255,255,0.03);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    html,body{height:100%;}
-    body{
-      margin:0;
-      padding:32px;
-      background: linear-gradient(180deg,var(--bg), #071024);
-      color:var(--white);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-
-    .container{
-      max-width:900px;
-      margin:0 auto;
-    }
-
-    header{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      margin-bottom:20px;
-    }
-    h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:0.6px;
-    }
-    .meta{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;
-      padding:18px;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.6);
-      border:1px solid rgba(255,255,255,0.03);
-      margin-bottom:18px;
-    }
-
-    .section-title{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .section-title h2{
-      margin:0;
-      font-size:14px;
-    }
-    .tag{
-      font-size:12px;
-      color:var(--muted);
-      background:var(--glass);
-      padding:6px 8px;
-      border-radius:8px;
-    }
-
-    pre.ascii{
-      background:transparent;
-      color:var(--muted);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
-      font-size:12px;
-      overflow:auto;
-      margin:0 0 12px 0;
-    }
-
-    ul.parts{
-      margin:0;
-      padding-left:18px;
-      line-height:1.6;
-      color:var(--white);
-    }
-
-    .controls{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    button.copy{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--accent);
-      padding:6px 10px;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:13px;
-      backdrop-filter: blur(4px);
-    }
-    button.copy:active{transform:translateY(1px)}
-    footer{
-      color:var(--muted);
-      font-size:13px;
-      margin-top:18px;
-      text-align:center;
-    }
-
-    @media (min-width:720px){
-      .two-col{
-        display:grid;
-        grid-template-columns: 1fr 1fr;
-        gap:14px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>HARDWARE PROJECTS</h1>
-      <div class="meta">Initialized on <strong>17/08/2025</strong></div>
-    </header>
-
-    <div class="card">
-      <div class="section-title">
-        <h2>QUADROCOPTER (HARDWARE REQUIRED)</h2>
-        <div class="controls">
-          <div class="tag">Status: Planned</div>
-          <button class="copy" id="copyHardware">Copy hardware list</button>
-        </div>
-      </div>
-
-      <pre class="ascii">=========================================================================================
-</pre>
-
-      <ul class="parts" id="hardwareList">
-        <li>4 × BLDC MOTOR — 1000KV A2212/13Y</li>
-        <li>4 × ESC — 30 AMP</li>
-        <li>1 × 2200mAh Lithium battery</li>
-        <li>1 × XT60/XT6050 connector (M/F)</li>
-        <li>4 × 10-inch propellers</li>
-        <li>1 × Arduino UNO</li>
-        <li>Jumper wires (MtM, MtF, FtF)</li>
-        <li>FlySky FS-i6 (6-channel transmitter and receiver / flight controller)</li>
-      </ul>
-
-      <pre class="ascii">=========================================================================================
-</pre>
-      <div style="color:var(--muted); font-size:13px; margin-top:8px;">
-        Notes: adjust motor/ESC specs to match frame weight and battery C-rating. Confirm connector type (XT60 vs XT6050) before ordering.
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="card">
-        <div class="section-title">
-          <h2>QUADROCOPTER (SOFTWARE)</h2>
-          <div class="tag">TODO</div>
-        </div>
-        <p style="color:var(--muted); margin:0;">
-          Add software stack details here (flight controller firmware, autopilot, companion computer, ground control station, PID tuning steps, etc.).
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="section-title">
-          <h2>PROJECT METADATA</h2>
-          <div class="tag">Project</div>
-        </div>
-
-        <ul style="margin:0; padding-left:18px; color:var(--muted); line-height:1.6;">
-          <li><strong>Initialized:</strong> 17/08/2025</li>
-          <li><strong>Category:</strong> Hardware / Embedded</li>
-          <li><strong>Next steps:</strong> Frame selection → ESC calibration → Motor test → Software integration</li>
-        </ul>
-      </div>
-    </div>
-
-    <footer>
-      Tip: to publish this page via GitHub Pages, put this file in the repository root (or `docs/`) and enable Pages in repository settings.
-    </footer>
-  </div>
-
-  <script>
-    // copy-to-clipboard for the hardware list (text-only)
-    document.getElementById('copyHardware').addEventListener('click', function(){
-      const items = Array.from(document.querySelectorAll('#hardwareList li')).map(li => "-> " + li.textContent.trim());
-      const text = items.join("\\n");
-      navigator.clipboard?.writeText(text).then(() => {
-        const prev = this.textContent;
-        this.textContent = "Copied!";
-        setTimeout(() => this.textContent = prev, 1500);
-      }).catch(() => {
-        alert('Unable to copy automatically. Select the list and press Ctrl/Cmd+C.');
-      });
-    });
-  </script>
-</body>
-</html>
-  <script>
-    // copy-to-clipboard for the hardware list (text-only)
-    document.getElementById('copyHardware').addEventListener('click', function(){
-      const items = Array.from(document.querySelectorAll('#hardwareList li')).map(li => "-> " + li.textContent.trim());
-      const text = items.join("\\n");
-      navigator.clipboard?.writeText(text).then(() => {
-        const prev = this.textContent;
-        this.textContent = "Copied!";
-        setTimeout(() => this.textContent = prev, 1500);
-      }).catch(() => {
-        alert('Unable to copy automatically. Select the list and press Ctrl/Cmd+C.');
-      });
-    });
-  </script>
-</body>
-</html>
-
+Install required dependencies:
+```bash
+pip install -r requirements.txt
